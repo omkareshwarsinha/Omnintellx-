@@ -1,0 +1,125 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Python Calculator Test API & Service Contract",
+    "version": "4.0.0",
+    "description": "Standardized autonomous interface definition and unit verification contracts."
+  },
+  "paths": {
+    "/calc/add": {
+      "post": {
+        "summary": "Addition calculation",
+        "parameters": [
+          {
+            "name": "a",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sum calculation result"
+          }
+        }
+      }
+    },
+    "/calc/subtract": {
+      "post": {
+        "summary": "Subtraction calculation",
+        "parameters": [
+          {
+            "name": "a",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Difference result"
+          }
+        }
+      }
+    },
+    "/calc/multiply": {
+      "post": {
+        "summary": "Multiplication calculation",
+        "parameters": [
+          {
+            "name": "a",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product result"
+          }
+        }
+      }
+    },
+    "/calc/divide": {
+      "post": {
+        "summary": "Division calculation",
+        "parameters": [
+          {
+            "name": "a",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quotient result"
+          },
+          "400": {
+            "description": "ZeroDivisionError: division by zero"
+          }
+        }
+      }
+    }
+  }
+}

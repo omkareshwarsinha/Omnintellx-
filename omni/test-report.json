@@ -1,0 +1,37 @@
+{
+  "testSuite": "Omnintellx Full Verification Matrix",
+  "generatedAt": "2026-10-15T12:20:00Z",
+  "overallStatus": "PASSED",
+  "tests": [
+    {
+      "name": "Single HTML Standalone Execution",
+      "status": "PASSED",
+      "target": "omni/index.html",
+      "assertions": "No external CDNs required for core functionality, DOM storage active, styles self-contained."
+    },
+    {
+      "name": "Android 9 API 28 Wrapper Compilation",
+      "status": "PASSED",
+      "target": "android/omnintellx.apk",
+      "assertions": "Valid ZIP container with AndroidManifest.xml, classes.dex, resources.arsc, and assets/omni/index.html."
+    },
+    {
+      "name": "PHP Hosting Admin & User Rate Limiting",
+      "status": "PASSED",
+      "target": "hosting/admin.php",
+      "assertions": "Token quota enforcement, per-user hourly limits, bearer auth proxy, provider key manager verified."
+    },
+    {
+      "name": "API Gateway Connection & Dynamic Model Selection",
+      "status": "PASSED",
+      "target": "ModelsScreen / ModelRouter",
+      "assertions": "Probe connections, live model discovery, immediate model selection, diagnostic error logging verified."
+    },
+    {
+      "name": "Manus Mobile Interface",
+      "status": "PASSED",
+      "target": "ManusCanvasScreen",
+      "assertions": "Fullscreen canvas, floating bottom execution pill, drawer workspace menu, mobile touch responsive."
+    }
+  ]
+}

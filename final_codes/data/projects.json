@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "id": "proj_cybersec_01",
+      "name": "Cybersecurity 3D Network Operations",
+      "description": "Interactive Three.js WebGL cinematic cybersecurity hub with glassmorphism telemetry UI and real-time defense monitoring.",
+      "createdAt": 1791969963380,
+      "updatedAt": 1791973563380,
+      "files": [
+        {
+          "id": "file_index_html",
+          "name": "index.html",
+          "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>CyberSecurity 3D Hub</title>\n  <script src=\"https://cdn.tailwindcss.com\"></script>\n  <script src=\"https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js\"></script>\n</head>\n<body class=\"bg-slate-950 text-white min-h-screen flex flex-col justify-between overflow-x-hidden\">\n  <header class=\"p-6 border-b border-cyan-500/20 flex justify-between items-center backdrop-blur bg-slate-900/60\">\n    <h1 class=\"text-xl font-bold text-cyan-400 tracking-wider\">CYBERSEC // THREAT GRID</h1>\n    <span class=\"text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono\">ACTIVE DEFENSE: ONLINE</span>\n  </header>\n  <main class=\"flex-1 relative flex items-center justify-center p-8\">\n    <canvas id=\"grid-canvas\" class=\"absolute inset-0 w-full h-full pointer-events-none\"></canvas>\n    <div class=\"relative z-10 max-w-xl text-center space-y-4 bg-slate-900/80 p-8 rounded-2xl border border-cyan-500/30 backdrop-blur-xl shadow-2xl shadow-cyan-500/10\">\n      <h2 class=\"text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500\">Autonomous Node Topology</h2>\n      <p class=\"text-sm text-slate-400 leading-relaxed\">Living WebGL mesh tracking real-time ingress vectors and mitigating adversarial threats automatically.</p>\n    </div>\n  </main>\n  <script>\n    const canvas = document.getElementById('grid-canvas');\n    const scene = new THREE.Scene();\n    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);\n    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });\n    renderer.setSize(window.innerWidth, window.innerHeight);\n    const geo = new THREE.IcosahedronGeometry(3, 2);\n    const mat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.35 });\n    const mesh = new THREE.Mesh(geo, mat);\n    scene.add(mesh);\n    camera.position.z = 7;\n    function anim() { requestAnimationFrame(anim); mesh.rotation.x += 0.003; mesh.rotation.y += 0.005; renderer.render(scene, camera); }\n    anim();\n    window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });\n  </script>\n</body>\n</html>"
+        }
+      ]
+    }
+  ]
+}

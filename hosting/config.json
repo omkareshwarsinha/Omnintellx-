@@ -1,0 +1,43 @@
+{
+  "admin_password_hash": "$2y$10$e0MYzXyjpJS7Pd0RVvHwHeV.o23G0D6l1bI0qf0B8b/qjE4u1eUhe",
+  "providers": {
+    "gemini": {
+      "apiKey": "",
+      "enabled": true
+    },
+    "openrouter": {
+      "apiKey": "",
+      "enabled": true
+    },
+    "groq": {
+      "apiKey": "",
+      "enabled": true
+    },
+    "openai": {
+      "apiKey": "",
+      "enabled": true
+    }
+  },
+  "users": [
+    {
+      "id": "usr_admin",
+      "username": "admin_developer",
+      "api_token": "omni_live_admin99f2b8a7c1",
+      "daily_token_quota": 500000,
+      "hourly_request_limit": 500,
+      "tokens_used_today": 1240,
+      "requests_made_today": 8,
+      "active": true
+    },
+    {
+      "id": "usr_client",
+      "username": "client_tier_1",
+      "api_token": "omni_live_user14b7f832e9",
+      "daily_token_quota": 50000,
+      "hourly_request_limit": 60,
+      "tokens_used_today": 4320,
+      "requests_made_today": 14,
+      "active": true
+    }
+  ]
+}

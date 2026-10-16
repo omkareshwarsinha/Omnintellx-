@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Omnintellx — Autonomous Multi-Agent Software Engineering Platform</title>
+    <meta name="description" content="Omnintellx — Autonomous Multi-Agent AI Software Engineering Platform with Real Workspace Execution, Autonomous Debugging, and Tool Orchestration." />
+    <meta property="og:title" content="Omnintellx — Autonomous Multi-Agent Software Engineering Platform" />
+    <meta property="og:description" content="Omnintellx — Autonomous Multi-Agent AI Software Engineering Platform with Real Workspace Execution, Autonomous Debugging, and Tool Orchestration." />
+    <meta name="theme-color" content="#0B0E13" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Omnintellx" />
+  </head>
+  <body class="bg-[#0B0E14] text-slate-100 antialiased selection:bg-emerald-500/30 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
+

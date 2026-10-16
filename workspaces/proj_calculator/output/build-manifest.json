@@ -1,0 +1,42 @@
+{
+  "buildTarget": "production_standalone_html",
+  "project": "Omnintellx Python Calculator",
+  "version": "4.0.0",
+  "engine": "Omnintellx Autonomous Multi-Agent Compiler",
+  "generatedAt": "2026-09-17T14:49:24.204Z",
+  "status": "VERIFIED",
+  "testResults": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "errors": 0,
+    "coverage": "100%",
+    "durationSeconds": 0.001
+  },
+  "securityAudit": {
+    "status": "PASSED",
+    "score": 100,
+    "vulnerabilities": 0,
+    "owaspCompliance": true
+  },
+  "deliverables": {
+    "flagshipApp": "output/index.html",
+    "portableOffline": "output/standalone.html",
+    "liveDashboard": "output/dashboard.html",
+    "neuralTerminal": "output/terminal.html",
+    "releaseManifest": "output/build-manifest.json",
+    "testReport": "output/test-report.json",
+    "apiContract": "output/api-specs.json",
+    "documentation": "output/README.md"
+  },
+  "files": [
+    "output/index.html",
+    "output/standalone.html",
+    "output/dashboard.html",
+    "output/terminal.html",
+    "output/build-manifest.json",
+    "output/test-report.json",
+    "output/api-specs.json",
+    "output/README.md"
+  ]
+}

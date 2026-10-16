@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "providers": [
+    {
+      "id": "prov_gemini",
+      "name": "Google Gemini",
+      "type": "gemini",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+      "apiKey": "",
+      "models": [
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
+        "gemini-1.5-pro",
+        "gemini-1.5-flash"
+      ],
+      "defaultModel": "gemini-2.0-flash",
+      "selectedModelId": "gemini-2.0-flash",
+      "status": "untested"
+    },
+    {
+      "id": "prov_openrouter",
+      "name": "OpenRouter Gateway",
+      "type": "openrouter",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "apiKey": "",
+      "models": [
+        "anthropic/claude-3.7-sonnet",
+        "anthropic/claude-3.5-sonnet",
+        "google/gemini-2.5-pro",
+        "google/gemini-2.5-flash",
+        "openai/gpt-4.5-preview",
+        "openai/gpt-4o",
+        "deepseek/deepseek-r1",
+        "deepseek/deepseek-chat",
+        "meta-llama/llama-3.3-70b-instruct",
+        "qwen/qwen-2.5-coder-32b-instruct"
+      ],
+      "defaultModel": "anthropic/claude-3.7-sonnet",
+      "selectedModelId": "anthropic/claude-3.7-sonnet",
+      "status": "untested"
+    },
+    {
+      "id": "prov_anthropic",
+      "name": "Anthropic Claude",
+      "type": "anthropic",
+      "baseUrl": "https://api.anthropic.com/v1",
+      "apiKey": "",
+      "models": [
+        "claude-3-7-sonnet-20250219",
+        "claude-3-5-sonnet-20241022",
+        "claude-3-5-haiku-20241022"
+      ],
+      "defaultModel": "claude-3-7-sonnet-20250219",
+      "selectedModelId": "claude-3-7-sonnet-20250219",
+      "status": "untested"
+    },
+    {
+      "id": "prov_openai",
+      "name": "OpenAI API",
+      "type": "openai",
+      "baseUrl": "https://api.openai.com/v1",
+      "apiKey": "",
+      "models": [
+        "gpt-4o",
+        "gpt-4o-mini",
+        "o3-mini",
+        "o1"
+      ],
+      "defaultModel": "gpt-4o",
+      "selectedModelId": "gpt-4o",
+      "status": "untested"
+    },
+    {
+      "id": "prov_cerebras",
+      "name": "Cerebras Fast Compute",
+      "type": "cerebras",
+      "baseUrl": "https://api.cerebras.ai/v1",
+      "apiKey": "",
+      "models": [
+        "llama3.3-70b",
+        "llama3.1-8b"
+      ],
+      "defaultModel": "llama3.3-70b",
+      "selectedModelId": "llama3.3-70b",
+      "status": "untested"
+    },
+    {
+      "id": "prov_groq",
+      "name": "Groq LPUs",
+      "type": "groq",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "apiKey": "",
+      "models": [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "deepseek-r1-distill-llama-70b"
+      ],
+      "defaultModel": "llama-3.3-70b-versatile",
+      "selectedModelId": "llama-3.3-70b-versatile",
+      "status": "untested"
+    },
+    {
+      "id": "prov_deepseek",
+      "name": "DeepSeek API",
+      "type": "deepseek",
+      "baseUrl": "https://api.deepseek.com",
+      "apiKey": "",
+      "models": [
+        "deepseek-chat",
+        "deepseek-reasoner"
+      ],
+      "defaultModel": "deepseek-chat",
+      "selectedModelId": "deepseek-chat",
+      "status": "untested"
+    },
+    {
+      "id": "prov_ollama",
+      "name": "Local Ollama",
+      "type": "ollama",
+      "baseUrl": "http://localhost:11434",
+      "apiKey": "",
+      "models": [
+        "llama3.3:latest",
+        "qwen2.5-coder:7b",
+        "deepseek-r1:8b"
+      ],
+      "defaultModel": "llama3.3:latest",
+      "selectedModelId": "llama3.3:latest",
+      "status": "untested",
+      "isLocalOnly": true
+    }
+  ],
+  "activeInferenceTarget": {
+    "providerId": "prov_gemini",
+    "providerType": "gemini",
+    "modelId": "gemini-2.5-flash"
+  },
+  "routingMode": "MANUAL",
+  "fallbackMode": "NONE"
+}

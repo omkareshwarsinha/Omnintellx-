@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optica3D — Class 10 Interactive Convex Lens Ray Optics Simulator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #090d16; color: #f1f5f9; margin: 0; overflow-x: hidden; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    #optics-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+    .glass-ui { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.12); }
+  </style>
+</head>
+<body class="selection:bg-indigo-500/30 selection:text-indigo-200">
+  <canvas id="optics-canvas"></canvas>
+
+  <div class="relative z-10 min-h-screen flex flex-col justify-between p-4 sm:p-6 max-w-7xl mx-auto pointer-events-none">
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pointer-events-auto glass-ui p-4 rounded-2xl">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 font-bold font-mono text-xl">
+          🔍
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+            Optica3D: Convex Lens Ray Optics
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">NCERT Class 10 Physics</span>
+          </h1>
+          <p class="text-xs text-slate-400 font-mono">Live 3D Ray Tracing, Real Formula Verification: 1/f = 1/v - 1/u</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="text-xs text-slate-300 font-mono">Presets:</span>
+        <button onclick="setPreset('beyond2f')" class="px-2.5 py-1 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 cursor-pointer">Beyond 2F₁</button>
+        <button onclick="setPreset('at2f')" class="px-2.5 py-1 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 cursor-pointer">At 2F₁</button>
+        <button onclick="setPreset('betweenF2F')" class="px-2.5 py-1 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 cursor-pointer">Between F₁ & 2F₁</button>
+        <button onclick="setPreset('focus')" class="px-2.5 py-1 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 cursor-pointer">At Focus F₁</button>
+        <button onclick="setPreset('virtual')" class="px-2.5 py-1 rounded-lg text-xs bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 text-indigo-200 font-semibold cursor-pointer">Between O & F₁ (Magnifier)</button>
+      </div>
+    </header>
+
+    <!-- Side Control Panel -->
+    <div class="pointer-events-auto self-start mt-4 w-full sm:w-80 glass-ui p-4 rounded-2xl space-y-4">
+      <div>
+        <label class="flex justify-between text-xs font-semibold text-slate-300">
+          <span>Object Distance (u)</span>
+          <span id="label-u" class="text-indigo-400 font-mono">-6.0 cm</span>
+        </label>
+        <input type="range" id="slider-u" min="-12" max="-1.5" step="0.1" value="-6.0" class="w-full mt-1.5 accent-indigo-500 cursor-pointer">
+      </div>
+
+      <div>
+        <label class="flex justify-between text-xs font-semibold text-slate-300">
+          <span>Focal Length (f)</span>
+          <span id="label-f" class="text-emerald-400 font-mono">+3.0 cm</span>
+        </label>
+        <input type="range" id="slider-f" min="2" max="5" step="0.5" value="3.0" class="w-full mt-1.5 accent-emerald-500 cursor-pointer">
+      </div>
+
+      <div>
+        <label class="flex justify-between text-xs font-semibold text-slate-300">
+          <span>Object Height (h₁)</span>
+          <span id="label-h" class="text-amber-400 font-mono">+2.0 cm</span>
+        </label>
+        <input type="range" id="slider-h" min="1" max="3" step="0.2" value="2.0" class="w-full mt-1.5 accent-amber-500 cursor-pointer">
+      </div>
+
+      <div class="pt-3 border-t border-white/10 text-xs font-mono space-y-1.5">
+        <div class="flex justify-between">
+          <span class="text-slate-400">Image Dist (v):</span>
+          <span id="val-v" class="text-white font-bold">+6.0 cm</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Magnification (m):</span>
+          <span id="val-m" class="text-white font-bold">-1.0x</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Image Height (h₂):</span>
+          <span id="val-h2" class="text-white font-bold">-2.0 cm</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Nature:</span>
+          <span id="val-nature" class="text-emerald-400 font-bold">Real & Inverted</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mathematical Formula Readout Footer -->
+    <footer class="pointer-events-auto glass-ui p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs">
+      <div class="space-y-1">
+        <div class="text-slate-300 font-bold flex items-center gap-2">
+          <span>📐</span> Lens Formula: <code class="text-indigo-300 bg-white/5 px-2 py-0.5 rounded">1/f = 1/v - 1/u</code>
+        </div>
+        <div class="text-[11px] text-slate-400">
+          Sign Convention: Light moves left to right. Optical Center O at origin (0,0,0). Object distance u is negative.
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] text-slate-300">
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Ray 1: Parallel to Axis</div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Ray 2: Optical Center (O)</div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> Ray 3: Through F₁</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('optics-canvas');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x090d16);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 3, 16);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambient);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(5, 10, 7);
+    scene.add(dirLight);
+
+    // Principal Axis Line (X-Axis)
+    const axisGeo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(-18, 0, 0),
+      new THREE.Vector3(18, 0, 0)
+    ]);
+    const axisMat = new THREE.LineDashedMaterial({ color: 0x64748b, dashSize: 0.3, gapSize: 0.15 });
+    const axisLine = new THREE.Line(axisGeo, axisMat);
+    axisLine.computeLineDistances();
+    scene.add(axisLine);
+
+    // 3D Glass Convex Lens (Two intersecting spheres simulated with Lathe/Sphere geometry)
+    const lensGroup = new THREE.Group();
+    scene.add(lensGroup);
+
+    const lensGeo = new THREE.CylinderGeometry(0.05, 0.05, 7, 32);
+    const lensGlassMat = new THREE.MeshPhysicalMaterial({
+      color: 0x93c5fd,
+      transmission: 0.92,
+      opacity: 1,
+      transparent: true,
+      roughness: 0.1,
+      ior: 1.52,
+      metalness: 0.1
+    });
+
+    // Biconvex Lens Mesh
+    const sphereA = new THREE.SphereGeometry(3.6, 32, 32);
+    const lensMesh = new THREE.Mesh(sphereA, lensGlassMat);
+    lensMesh.scale.set(0.18, 1, 1);
+    lensGroup.add(lensMesh);
+
+    // Center Lens Line
+    const centerLineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -4, 0), new THREE.Vector3(0, 4, 0)]);
+    const centerLine = new THREE.Line(centerLineGeo, new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.4 }));
+    lensGroup.add(centerLine);
+
+    // Optical Center Label "O"
+    function createMarker(x, labelText, color = 0x94a3b8) {
+      const g = new THREE.Group();
+      const dot = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshBasicMaterial({ color }));
+      dot.position.set(x, 0, 0);
+      g.add(dot);
+      scene.add(g);
+      return g;
+    }
+
+    let f1Marker = createMarker(-3, 'F1', 0x10b981);
+    let f2Marker = createMarker(3, 'F2', 0x10b981);
+    let twoF1Marker = createMarker(-6, '2F1', 0x6366f1);
+    let twoF2Marker = createMarker(6, '2F2', 0x6366f1);
+
+    // 3D Arrow Builder (Object / Image)
+    function createArrow(color = 0xf59e0b) {
+      const group = new THREE.Group();
+      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1, 16), new THREE.MeshStandardMaterial({ color }));
+      shaft.name = 'shaft';
+      group.add(shaft);
+
+      const cone = new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.4, 16), new THREE.MeshStandardMaterial({ color }));
+      cone.name = 'cone';
+      group.add(cone);
+
+      return group;
+    }
+
+    const objectArrow = createArrow(0xf59e0b); // Amber object
+    scene.add(objectArrow);
+
+    const imageArrow = createArrow(0xec4899); // Pink image
+    scene.add(imageArrow);
+
+    function updateArrow(arrow, x, height) {
+      arrow.position.x = x;
+      arrow.position.y = height / 2;
+
+      const shaft = arrow.getObjectByName('shaft');
+      const cone = arrow.getObjectByName('cone');
+
+      const absHeight = Math.abs(height);
+      const isUpright = height >= 0;
+
+      shaft.scale.set(1, Math.max(0.01, absHeight - 0.4), 1);
+      shaft.position.y = isUpright ? -0.2 : 0.2;
+
+      cone.position.y = isUpright ? (absHeight / 2) - 0.2 : -(absHeight / 2) + 0.2;
+      cone.rotation.z = isUpright ? 0 : Math.PI;
+    }
+
+    // Ray Lines
+    const ray1Line = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x22d3ee, linewidth: 2 }));
+    const ray2Line = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0xfbbf24, linewidth: 2 }));
+    const ray3Line = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0xa855f7, linewidth: 2 }));
+    scene.add(ray1Line, ray2Line, ray3Line);
+
+    // State Variables
+    let u = -6.0;
+    let f = 3.0;
+    let h1 = 2.0;
+
+    function recalculateOptics() {
+      // Sign convention:
+      // 1/f = 1/v - 1/u  ==>  1/v = 1/f + 1/u  ==>  v = (f * u) / (u + f)
+      const denominator = u + f;
+      const isInfinite = Math.abs(denominator) < 0.001;
+
+      let v = 0;
+      let m = 0;
+      let h2 = 0;
+
+      if (!isInfinite) {
+        v = (f * u) / denominator;
+        m = v / u;
+        h2 = m * h1;
+      }
+
+      // Update DOM Readouts
+      document.getElementById('label-u').textContent = `${u.toFixed(1)} cm`;
+      document.getElementById('label-f').textContent = `+${f.toFixed(1)} cm`;
+      document.getElementById('label-h').textContent = `+${h1.toFixed(1)} cm`;
+
+      if (isInfinite) {
+        document.getElementById('val-v').textContent = 'Infinity (Parallel rays)';
+        document.getElementById('val-m').textContent = 'Highly Enlarged';
+        document.getElementById('val-h2').textContent = 'Infinite';
+        document.getElementById('val-nature').textContent = 'Real, Inverted at Infinity';
+        imageArrow.visible = false;
+      } else {
+        document.getElementById('val-v').textContent = `${v > 0 ? '+' : ''}${v.toFixed(2)} cm`;
+        document.getElementById('val-m').textContent = `${m.toFixed(2)}x`;
+        document.getElementById('val-h2').textContent = `${h2.toFixed(2)} cm`;
+        const nature = v > 0 ? 'Real & Inverted' : 'Virtual & Erect';
+        document.getElementById('val-nature').textContent = nature;
+        imageArrow.visible = true;
+        updateArrow(imageArrow, v, h2);
+      }
+
+      updateArrow(objectArrow, u, h1);
+
+      // Update Markers
+      f1Marker.position.x = -f;
+      f2Marker.position.x = f;
+      twoF1Marker.position.x = -2 * f;
+      twoF2Marker.position.x = 2 * f;
+
+      // Update Rays
+      // Ray 1: Top of object -> Lens at (0, h1) -> Refracts through F2 (f, 0) -> extends to Image (v, h2) or infinity
+      const ray1Points = [
+        new THREE.Vector3(u, h1, 0),
+        new THREE.Vector3(0, h1, 0),
+        isInfinite ? new THREE.Vector3(15, h1 - (h1 / f) * 15, 0) : new THREE.Vector3(v, h2, 0)
+      ];
+      ray1Line.geometry.setFromPoints(ray1Points);
+
+      // Ray 2: Top of object -> Optical Center (0, 0, 0) -> Continues straight
+      const ray2Points = [
+        new THREE.Vector3(u, h1, 0),
+        new THREE.Vector3(0, 0, 0),
+        isInfinite ? new THREE.Vector3(15, -15 * (h1 / Math.abs(u)), 0) : new THREE.Vector3(v, h2, 0)
+      ];
+      ray2Line.geometry.setFromPoints(ray2Points);
+
+      // Ray 3: Through F1 (-f, 0) -> Lens -> Parallel
+      const slopeF1 = (0 - h1) / (-f - u);
+      const yAtLens = h1 + slopeF1 * (0 - u);
+      const ray3Points = [
+        new THREE.Vector3(u, h1, 0),
+        new THREE.Vector3(0, yAtLens, 0),
+        new THREE.Vector3(isInfinite ? 15 : v, isInfinite ? yAtLens : h2, 0)
+      ];
+      ray3Line.geometry.setFromPoints(ray3Points);
+    }
+
+    // Input Listeners
+    document.getElementById('slider-u').addEventListener('input', (e) => {
+      u = parseFloat(e.target.value);
+      recalculateOptics();
+    });
+
+    document.getElementById('slider-f').addEventListener('input', (e) => {
+      f = parseFloat(e.target.value);
+      recalculateOptics();
+    });
+
+    document.getElementById('slider-h').addEventListener('input', (e) => {
+      h1 = parseFloat(e.target.value);
+      recalculateOptics();
+    });
+
+    window.setPreset = (name) => {
+      if (name === 'beyond2f') { u = -8.0; f = 3.0; }
+      else if (name === 'at2f') { u = -6.0; f = 3.0; }
+      else if (name === 'betweenF2F') { u = -4.5; f = 3.0; }
+      else if (name === 'focus') { u = -3.0; f = 3.0; }
+      else if (name === 'virtual') { u = -1.8; f = 3.0; }
+
+      document.getElementById('slider-u').value = u;
+      document.getElementById('slider-f').value = f;
+      recalculateOptics();
+    };
+
+    recalculateOptics();
+
+    // Mouse drag camera orbit
+    let isOrbiting = false;
+    let prevMouseX = 0, prevMouseY = 0;
+
+    window.addEventListener('mousedown', (e) => {
+      isOrbiting = true;
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', () => { isOrbiting = false; });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isOrbiting) {
+        const dx = e.clientX - prevMouseX;
+        const dy = e.clientY - prevMouseY;
+        scene.rotation.y += dx * 0.005;
+        scene.rotation.x += dy * 0.005;
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

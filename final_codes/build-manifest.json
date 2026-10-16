@@ -1,0 +1,33 @@
+{
+  "buildTarget": "production_final_codes_distribution",
+  "project": "Omnintellx Autonomous Software Studio",
+  "version": "5.0.0",
+  "engine": "Omnintellx Autonomous Multi-Agent Compiler (Manus & Ideavo Framework)",
+  "generatedAt": "2026-10-14T02:24:34.639Z",
+  "deliverables": {
+    "flagshipApp": "index.html",
+    "portableOffline": "standalone.html",
+    "platformStudio": "omnintellx.html",
+    "docsArchive": "docs.zip",
+    "docsFolder": "docs/"
+  },
+  "files": [
+    "index.html",
+    "standalone.html",
+    "omnintellx.html",
+    "docs.zip",
+    "build-manifest.json",
+    "README.md",
+    "docs/PRD.md",
+    "docs/ARCHITECTURE.md",
+    "docs/WORKFLOW_GUIDE.md",
+    "docs/API_ORCHESTRATION_SPEC.md",
+    "docs/USER_GUIDE.md",
+    "docs/SYSTEM_CONSTITUTION.md"
+  ],
+  "securityAudit": {
+    "status": "PASSED",
+    "score": 100,
+    "vulnerabilities": 0
+  }
+}

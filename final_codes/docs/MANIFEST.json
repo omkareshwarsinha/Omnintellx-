@@ -1,0 +1,20 @@
+{
+  "package": "Omnintellx Documentation Suite",
+  "version": "4.0.0",
+  "generatedAt": "2026-10-14T02:24:34.638Z",
+  "documents": [
+    "PRD.md",
+    "ARCHITECTURE.md",
+    "WORKFLOW_GUIDE.md",
+    "API_ORCHESTRATION_SPEC.md",
+    "USER_GUIDE.md",
+    "SYSTEM_CONSTITUTION.md"
+  ],
+  "status": "VERIFIED",
+  "compliance": {
+    "manusFramework": true,
+    "ideavoWorkflow": true,
+    "zeroPredefinedTemplates": true,
+    "multiAiCouncil": true
+  }
+}

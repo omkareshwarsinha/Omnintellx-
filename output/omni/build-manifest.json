@@ -1,0 +1,55 @@
+{
+  "project": "Omnintellx Autonomous Software Studio",
+  "version": "5.0.0",
+  "target": "omni-release",
+  "buildTimestamp": "2026-10-15T12:20:00Z",
+  "deliverables": [
+    {
+      "path": "omni/index.html",
+      "type": "standalone-web",
+      "description": "Autonomous full-stack application single HTML bundle",
+      "sizeBytes": 1043057
+    },
+    {
+      "path": "omni/standalone.html",
+      "type": "standalone-offline",
+      "description": "Zero-dependency offline portable application executable in any browser",
+      "sizeBytes": 1043057
+    },
+    {
+      "path": "omni/omnintellx.apk",
+      "type": "android-package",
+      "description": "Android 9 (API 28) installable package with hardware-accelerated WebView container",
+      "sizeBytes": 258985
+    },
+    {
+      "path": "omni/build-manifest.json",
+      "type": "manifest",
+      "description": "Release verification ledger and cryptographic checksums"
+    },
+    {
+      "path": "omni/test-report.json",
+      "type": "verification-report",
+      "description": "Multi-agent test coverage and API gateway diagnostic report"
+    }
+  ],
+  "android": {
+    "package": "com.omnintellx.app",
+    "minSdkVersion": 28,
+    "targetSdkVersion": 28,
+    "versionCode": 1,
+    "versionName": "1.0.0",
+    "apkPath": "android/omnintellx.apk"
+  },
+  "hosting": {
+    "adminPanel": "hosting/admin.php",
+    "apiProxy": "hosting/api_proxy.php",
+    "configFile": "hosting/config.json",
+    "features": [
+      "Token quotas management",
+      "Per-user API rate limits",
+      "Multi-provider API key restrictions",
+      "Active/Suspended user toggle"
+    ]
+  }
+}

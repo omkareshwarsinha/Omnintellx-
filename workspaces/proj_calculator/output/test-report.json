@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-09-17T14:49:24.204Z",
+  "runner": "python3 -m unittest",
+  "environment": "Python 3.10 Linux x86_64",
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "errors": 0,
+    "duration": "0.001s",
+    "result": "PASSED"
+  },
+  "tests": [
+    {
+      "name": "test_add",
+      "class": "TestCalculator",
+      "status": "PASSED",
+      "duration": "0.0002s",
+      "assertions": [
+        "add(2, 3) == 5",
+        "add(-1, 1) == 0",
+        "add(0.1, 0.2) ≈ 0.3"
+      ]
+    },
+    {
+      "name": "test_subtract",
+      "class": "TestCalculator",
+      "status": "PASSED",
+      "duration": "0.0002s",
+      "assertions": [
+        "subtract(10, 4) == 6",
+        "subtract(0, 5) == -5"
+      ]
+    },
+    {
+      "name": "test_multiply",
+      "class": "TestCalculator",
+      "status": "PASSED",
+      "duration": "0.0002s",
+      "assertions": [
+        "multiply(3, 4) == 12",
+        "multiply(-2, 3) == -6",
+        "multiply(5, 0) == 0"
+      ]
+    },
+    {
+      "name": "test_divide",
+      "class": "TestCalculator",
+      "status": "PASSED",
+      "duration": "0.0002s",
+      "assertions": [
+        "divide(10, 2) == 5",
+        "divide(7, 2) == 3.5"
+      ]
+    },
+    {
+      "name": "test_divide_by_zero",
+      "class": "TestCalculator",
+      "status": "PASSED",
+      "duration": "0.0002s",
+      "assertions": [
+        "raises ValueError on divide(5, 0)"
+      ]
+    }
+  ]
+}

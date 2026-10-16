@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Omnintellx</string>
+    <string name="storage_permission_rationale">Omnintellx requires storage access to save code files and exported standalone releases.</string>
+</resources>

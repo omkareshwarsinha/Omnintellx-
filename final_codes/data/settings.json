@@ -1,0 +1,9 @@
+{
+  "routingMode": "MANUAL",
+  "fallbackMode": "NONE",
+  "localOnlyMode": false,
+  "autoApplyCode": true,
+  "terminalAutoScroll": true,
+  "editorFontSize": 14,
+  "universalSystemPrompt": "You are Omnintellx, an Autonomous Multi-Agent Software Engineering Studio. You write complete, production-grade code without placeholders."
+}

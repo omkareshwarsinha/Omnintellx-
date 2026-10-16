@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chronos Horizon — Grand Tourbillon Haute Horlogerie</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #080706; color: #ece5dc; margin: 0; overflow-x: hidden; }
+    .font-serif { font-family: 'Cinzel', serif; }
+    #watch-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+    .gold-gradient { background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa7c11 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .glass-card { background: rgba(22, 19, 16, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.2); }
+  </style>
+</head>
+<body class="selection:bg-amber-700/30 selection:text-amber-200">
+  <canvas id="watch-canvas"></canvas>
+
+  <div class="relative z-10 min-h-screen flex flex-col justify-between p-6 sm:p-12 max-w-7xl mx-auto pointer-events-none">
+    <!-- Header -->
+    <header class="flex items-center justify-between pointer-events-auto">
+      <div>
+        <h1 class="font-serif text-2xl tracking-[0.25em] text-white">CHRONOS HORIZON</h1>
+        <p class="text-[10px] tracking-[0.3em] uppercase text-amber-500/80">Genève • Calibre 1889 Tourbillon</p>
+      </div>
+      <div class="hidden sm:flex items-center gap-6 text-xs font-serif tracking-widest text-stone-400">
+        <span class="hover:text-amber-300 transition-colors cursor-pointer">ATELIER</span>
+        <span class="hover:text-amber-300 transition-colors cursor-pointer">COMPLICATIONS</span>
+        <span class="hover:text-amber-300 transition-colors cursor-pointer">BESPOKE</span>
+        <span class="px-3 py-1 border border-amber-500/40 text-amber-300 rounded-sm hover:bg-amber-500/10 cursor-pointer">INQUIRE</span>
+      </div>
+    </header>
+
+    <!-- Center Hero -->
+    <main class="my-auto py-12 pointer-events-auto max-w-xl">
+      <div class="text-[11px] font-serif tracking-[0.3em] uppercase text-amber-400 mb-2">Piece Unique № 01/01</div>
+      <h2 class="font-serif text-4xl sm:text-6xl font-light text-white leading-tight">
+        The Geometry of <br><span class="gold-gradient font-bold">Eternity</span>.
+      </h2>
+      <p class="mt-4 text-xs sm:text-sm text-stone-300 font-light leading-relaxed">
+        Featuring a flying triple-axis tourbillon escapement rotating once every 60 seconds. Hand-beveled 18K rose gold bridges, balance spring vibrating at 21,600 vph, and double anti-reflective sapphire crystal.
+      </p>
+
+      <!-- Dial Selector -->
+      <div class="mt-8 flex items-center gap-3">
+        <button id="dial-rose" class="px-4 py-2 rounded-full glass-card text-xs font-serif text-amber-200 hover:border-amber-400 transition-all cursor-pointer">
+          Rose Gold
+        </button>
+        <button id="dial-obsidian" class="px-4 py-2 rounded-full glass-card text-xs font-serif text-stone-400 hover:text-white hover:border-stone-400 transition-all cursor-pointer">
+          Obsidian Titanium
+        </button>
+        <button id="dial-platinum" class="px-4 py-2 rounded-full glass-card text-xs font-serif text-slate-300 hover:text-white hover:border-slate-300 transition-all cursor-pointer">
+          Platinum Frost
+        </button>
+      </div>
+    </main>
+
+    <!-- Specifications Footer -->
+    <footer class="grid grid-cols-2 sm:grid-cols-4 gap-4 pointer-events-auto text-xs font-serif">
+      <div class="glass-card p-4 rounded-lg">
+        <div class="text-[10px] text-stone-400 uppercase tracking-widest">Escapement</div>
+        <div class="text-white font-semibold text-sm mt-0.5">Flying Tourbillon</div>
+        <div class="text-amber-400 text-[10px] mt-0.5">60s Single Axis Cycle</div>
+      </div>
+      <div class="glass-card p-4 rounded-lg">
+        <div class="text-[10px] text-stone-400 uppercase tracking-widest">Power Reserve</div>
+        <div class="text-white font-semibold text-sm mt-0.5">72 Hours Twin Barrel</div>
+        <div class="text-stone-400 text-[10px] mt-0.5">Hand-Wound Calibre</div>
+      </div>
+      <div class="glass-card p-4 rounded-lg">
+        <div class="text-[10px] text-stone-400 uppercase tracking-widest">Case Diameter</div>
+        <div class="text-white font-semibold text-sm mt-0.5">41.5mm • 9.8mm Profile</div>
+        <div class="text-stone-400 text-[10px] mt-0.5">30m Water Resistance</div>
+      </div>
+      <div class="glass-card p-4 rounded-lg">
+        <div class="text-[10px] text-stone-400 uppercase tracking-widest">3D Interaction</div>
+        <div class="text-amber-300 font-semibold text-xs mt-0.5">Drag to Inspect 360°</div>
+        <div class="text-stone-400 text-[10px] mt-0.5">Studio PBR Lighting</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('watch-canvas');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x080706);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 11);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+
+    // Lights
+    const keyLight = new THREE.SpotLight(0xfff3db, 3, 20, Math.PI / 4, 0.5);
+    keyLight.position.set(6, 8, 8);
+    scene.add(keyLight);
+
+    const rimLight = new THREE.SpotLight(0xd4af37, 4, 25, Math.PI / 3, 0.4);
+    rimLight.position.set(-8, -6, 5);
+    scene.add(rimLight);
+
+    const fillLight = new THREE.AmbientLight(0x2d241e, 1.5);
+    scene.add(fillLight);
+
+    // Watch Group
+    const watch = new THREE.Group();
+    scene.add(watch);
+
+    // Materials
+    let goldMat = new THREE.MeshStandardMaterial({
+      color: 0xd4af37,
+      metalness: 0.95,
+      roughness: 0.22
+    });
+
+    let dialMat = new THREE.MeshStandardMaterial({
+      color: 0x14100c,
+      metalness: 0.6,
+      roughness: 0.4
+    });
+
+    const steelMat = new THREE.MeshStandardMaterial({
+      color: 0xcccccc,
+      metalness: 0.95,
+      roughness: 0.15
+    });
+
+    const jewelMat = new THREE.MeshPhysicalMaterial({
+      color: 0xe11d48,
+      transmission: 0.9,
+      opacity: 1,
+      transparent: true,
+      roughness: 0.1
+    });
+
+    // 1. Outer Watch Case & Bezel (Torus & Cylinder)
+    const bezelGeo = new THREE.TorusGeometry(3.6, 0.35, 32, 100);
+    const bezelMesh = new THREE.Mesh(bezelGeo, goldMat);
+    watch.add(bezelMesh);
+
+    const caseBodyGeo = new THREE.CylinderGeometry(3.6, 3.5, 0.7, 64);
+    caseBodyGeo.rotateX(Math.PI / 2);
+    const caseBodyMesh = new THREE.Mesh(caseBodyGeo, goldMat);
+    caseBodyMesh.position.z = -0.35;
+    watch.add(caseBodyMesh);
+
+    // Crown at 3 o'clock
+    const crownGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.5, 24);
+    crownGeo.rotateZ(Math.PI / 2);
+    const crownMesh = new THREE.Mesh(crownGeo, goldMat);
+    crownMesh.position.set(3.9, 0, 0);
+    watch.add(crownMesh);
+
+    // 2. Watch Face / Dial Plate
+    const dialGeo = new THREE.CircleGeometry(3.3, 64);
+    const dialMesh = new THREE.Mesh(dialGeo, dialMat);
+    dialMesh.position.z = 0.05;
+    watch.add(dialMesh);
+
+    // Hour Indices (12 markers around dial)
+    for (let i = 0; i < 12; i++) {
+      const angle = (i / 12) * Math.PI * 2;
+      const indexGeo = new THREE.BoxGeometry(0.08, i % 3 === 0 ? 0.45 : 0.28, 0.05);
+      const indexMesh = new THREE.Mesh(indexGeo, goldMat);
+      indexMesh.position.set(Math.sin(angle) * 2.8, Math.cos(angle) * 2.8, 0.1);
+      indexMesh.rotation.z = -angle;
+      watch.add(indexMesh);
+    }
+
+    // 3. Hands (Hour, Minute, Blued Steel seconds)
+    const hourHandGeo = new THREE.BoxGeometry(0.12, 1.6, 0.04);
+    hourHandGeo.translate(0, 0.7, 0);
+    const hourHand = new THREE.Mesh(hourHandGeo, goldMat);
+    hourHand.position.z = 0.2;
+    watch.add(hourHand);
+
+    const minuteHandGeo = new THREE.BoxGeometry(0.09, 2.3, 0.04);
+    minuteHandGeo.translate(0, 1.05, 0);
+    const minuteHand = new THREE.Mesh(minuteHandGeo, goldMat);
+    minuteHand.position.z = 0.25;
+    watch.add(minuteHand);
+
+    // Center Cap
+    const capGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.08, 32);
+    capGeo.rotateX(Math.PI / 2);
+    const capMesh = new THREE.Mesh(capGeo, goldMat);
+    capMesh.position.z = 0.3;
+    watch.add(capMesh);
+
+    // 4. Tourbillon Cage at 6 o'clock (Radius 1.2 at y = -1.5)
+    const tourbillonGroup = new THREE.Group();
+    tourbillonGroup.position.set(0, -1.4, 0.15);
+    watch.add(tourbillonGroup);
+
+    // Tourbillon Cutout Ring
+    const cutoutRingGeo = new THREE.RingGeometry(0.9, 1.05, 32);
+    const cutoutRing = new THREE.Mesh(cutoutRingGeo, goldMat);
+    tourbillonGroup.add(cutoutRing);
+
+    // Escapement Cage & Rotating Balance Wheel
+    const cageGeo = new THREE.TorusGeometry(0.8, 0.05, 16, 32);
+    const cageMesh = new THREE.Mesh(cageGeo, steelMat);
+    tourbillonGroup.add(cageMesh);
+
+    // Balance wheel with 3 spokes
+    const balanceGeo = new THREE.RingGeometry(0.65, 0.75, 32);
+    const balanceWheel = new THREE.Mesh(balanceGeo, goldMat);
+    tourbillonGroup.add(balanceWheel);
+
+    for (let i = 0; i < 3; i++) {
+      const spokeGeo = new THREE.BoxGeometry(0.05, 0.7, 0.03);
+      const spokeMesh = new THREE.Mesh(spokeGeo, goldMat);
+      spokeMesh.rotation.z = (i / 3) * Math.PI * 2;
+      balanceWheel.add(spokeMesh);
+    }
+
+    // Ruby Pivot Jewel in Center
+    const rubyGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.05, 16);
+    rubyGeo.rotateX(Math.PI / 2);
+    const rubyMesh = new THREE.Mesh(rubyGeo, jewelMat);
+    tourbillonGroup.add(rubyMesh);
+
+    // Interactive Drag Orbit
+    let isDragging = false;
+    let prevX = 0, prevY = 0;
+
+    window.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      prevX = e.clientX;
+      prevY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const dx = e.clientX - prevX;
+        const dy = e.clientY - prevY;
+        watch.rotation.y += dx * 0.007;
+        watch.rotation.x += dy * 0.007;
+        prevX = e.clientX;
+        prevY = e.clientY;
+      }
+    });
+
+    // Touch
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        prevX = e.touches[0].clientX;
+        prevY = e.touches[0].clientY;
+      }
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const dx = e.touches[0].clientX - prevX;
+        const dy = e.touches[0].clientY - prevY;
+        watch.rotation.y += dx * 0.007;
+        watch.rotation.x += dy * 0.007;
+        prevX = e.touches[0].clientX;
+        prevY = e.touches[0].clientY;
+      }
+    });
+
+    // Dial Style Switchers
+    document.getElementById('dial-rose').addEventListener('click', () => {
+      goldMat.color.setHex(0xd4af37);
+      dialMat.color.setHex(0x14100c);
+    });
+
+    document.getElementById('dial-obsidian').addEventListener('click', () => {
+      goldMat.color.setHex(0x44403c);
+      dialMat.color.setHex(0x0a0a0a);
+    });
+
+    document.getElementById('dial-platinum').addEventListener('click', () => {
+      goldMat.color.setHex(0xe2e8f0);
+      dialMat.color.setHex(0x1e293b);
+    });
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Mechanical gear & tourbillon rotation (60s tourbillon = 0.015 rad/frame)
+      tourbillonGroup.rotation.z -= 0.015;
+      balanceWheel.rotation.z = Math.sin(performance.now() * 0.02) * 0.6;
+
+      // Real clock simulation
+      const time = performance.now() * 0.0005;
+      minuteHand.rotation.z = -time;
+      hourHand.rotation.z = -time / 12;
+
+      // Subtle float
+      if (!isDragging) {
+        watch.rotation.y = Math.sin(performance.now() * 0.0008) * 0.25;
+        watch.rotation.x = Math.cos(performance.now() * 0.0006) * 0.15;
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

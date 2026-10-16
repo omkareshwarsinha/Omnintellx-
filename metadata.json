@@ -1,0 +1,6 @@
+{
+  "name": "Omnintellx",
+  "description": "Autonomous Multi-Agent AI Software Engineering Platform with Real Workspace Execution, Autonomous Debugging, and Tool Orchestration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
